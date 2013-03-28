@@ -1,13 +1,13 @@
-%define		basever	3.6
+%define		basever	3.8
 
 Summary:	WebKit-based GNOME web browser
 Name:		epiphany
-Version:	%{basever}.1
-Release:	1
+Version:	%{basever}.0
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	8360bd24a673223387c69297e8a710b8
+# Source0-md5:	920c1b16aa0f5b4334f17702fd10b657
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -26,7 +26,6 @@ BuildRequires:	libxslt-devel
 BuildRequires:	pkg-config
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	glib-gio-gsettings
-Requires(post,postun):	rarian
 Requires:	dbus
 Requires:	gsettings-desktop-schemas
 Requires:	iso-codes
@@ -35,22 +34,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 GNOME web browser based on WebKit.
-
-# doesn't require base
-%package devel
-Summary:	Epiphany header files
-Group:		X11/Applications/Networking
-
-%description devel
-Epiphany header files for plugin development.
-
-%package apidocs
-Summary:	Epiphany API documentation
-Group:		Documentation
-Requires:	gtk-doc-common
-
-%description apidocs
-Epiphany API documentation.
 
 %prep
 %setup -q
@@ -78,32 +61,27 @@ echo 'NoDisplay=true' >> data/bme.desktop.in.in
 %configure \
 	--disable-schemas-compile	\
 	--disable-silent-rules		\
-	--enable-introspection		\
-	--with-distributor-name=Freddix	\
-	--with-html-dir=%{_gtkdocdir}
+	--with-distributor-name=Freddix
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/%{basever}/extensions
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 rm -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw,tk,ps}
 
-%find_lang %{name} --with-gnome --with-omf
+%find_lang %{name} --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%scrollkeeper_update_post
 %update_desktop_database_post
 %update_gsettings_cache
 
 %postun
-%scrollkeeper_update_postun
 %update_desktop_database_postun
 %update_gsettings_cache
 
@@ -113,31 +91,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/%{basever}
-%dir %{_libdir}/%{name}/%{basever}/extensions
+%dir %{_libdir}/%{name}/%{basever}/web-extensions
 
 %attr(755,root,root) %{_bindir}/ephy-profile-migrator
 %attr(755,root,root) %{_bindir}/epiphany
+%attr(755,root,root) %{_libdir}/epiphany/3.8/web-extensions/libephywebextension.so
 
 %{_datadir}/%{name}
 
-%{_datadir}/GConf/gsettings/epiphany.convert
 %{_datadir}/dbus-1/services/org.gnome.Epiphany.service
 %{_datadir}/glib-2.0/schemas/org.gnome.Epiphany.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.epiphany.gschema.xml
 
 %{_desktopdir}/epiphany.desktop
 %{_mandir}/man1/epiphany.1*
-
-%{_libdir}/girepository-1.0/*.typelib
-
-%files devel
-%defattr(644,root,root,755)
-%{_aclocaldir}/*.m4
-%{_includedir}/epiphany
-%{_pkgconfigdir}/*.pc
-%{_datadir}/gir-1.0/Epiphany-*.gir
-
-%files apidocs
-%defattr(644,root,root,755)
-%{_gtkdocdir}/epiphany
 
