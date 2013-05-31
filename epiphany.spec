@@ -2,12 +2,12 @@
 
 Summary:	WebKit-based GNOME web browser
 Name:		epiphany
-Version:	%{basever}.1
+Version:	%{basever}.2
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	b39d091d6417dff296898f68905a626a
+# Source0-md5:	5aa6c07fba38a395e5aa94ae7346a9cb
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
