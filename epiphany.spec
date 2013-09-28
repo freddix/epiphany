@@ -1,33 +1,34 @@
-%define		basever	3.8
+%define		basever	3.10
 
 Summary:	WebKit-based GNOME web browser
 Name:		epiphany
-Version:	%{basever}.2
+Version:	%{basever}.0
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	5aa6c07fba38a395e5aa94ae7346a9cb
+# Source0-md5:	009d9ed8ee25885c5539c124f4630072
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-glib-devel
 BuildRequires:	enchant-devel
-BuildRequires:	gcr-devel
-BuildRequires:	gnome-desktop-devel
+BuildRequires:	gcr-devel >= 3.10.0
+BuildRequires:	gnome-desktop-devel >= 3.10.0
 BuildRequires:	gnome-doc-utils
-BuildRequires:	gobject-introspection-devel
-BuildRequires:	gsettings-desktop-schemas-devel
-BuildRequires:	gtk+3-webkit-devel
+BuildRequires:	gobject-introspection-devel >= 1.38.0
+BuildRequires:	gsettings-desktop-schemas-devel >= 3.10.0
+BuildRequires:	gtk+3-webkit-devel >= 2.2.0
 BuildRequires:	intltool
 BuildRequires:	iso-codes
 BuildRequires:	libtool
+BuildRequires:	libwnck-devel
 BuildRequires:	libxslt-devel
 BuildRequires:	pkg-config
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	glib-gio-gsettings
 Requires:	dbus
-Requires:	gsettings-desktop-schemas
+Requires:	gsettings-desktop-schemas >= 3.10.0
 Requires:	iso-codes
 Requires:	xdg-icon-theme
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -39,13 +40,13 @@ GNOME web browser based on WebKit.
 %setup -q
 
 # kill gnome common deps
-sed -i -e '/GNOME_COMPILE_WARNINGS.*/d'	\
+%{__sed} -i -e '/GNOME_COMPILE_WARNINGS.*/d'	\
     -i -e '/GNOME_MAINTAINER_MODE_DEFINES/d'	\
     -i -e '/GNOME_COMMON_INIT/d'		\
     -i -e '/GNOME_CODE_COVERAGE/d'		\
     -i -e '/GNOME_DEBUG_CHECK/d' configure.ac
 
-sed -i '/@GNOME_CODE_COVERAGE_RULES@/d' Makefile.am
+%{__sed} -i '/@GNOME_CODE_COVERAGE_RULES@/d' Makefile.am
 
 echo 'NoDisplay=true' >> data/bme.desktop.in.in
 
@@ -95,13 +96,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_bindir}/ephy-profile-migrator
 %attr(755,root,root) %{_bindir}/epiphany
-%attr(755,root,root) %{_libdir}/epiphany/3.8/web-extensions/libephywebextension.so
+%attr(755,root,root) %{_libdir}/epiphany/3.*/web-extensions/libephywebextension.so
 
 %{_datadir}/%{name}
 
 %{_datadir}/dbus-1/services/org.gnome.Epiphany.service
 %{_datadir}/glib-2.0/schemas/org.gnome.Epiphany.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.epiphany.gschema.xml
+%{_datadir}/gnome-shell/search-providers/epiphany-search-provider.ini
 
 %{_desktopdir}/epiphany.desktop
 %{_mandir}/man1/epiphany.1*
