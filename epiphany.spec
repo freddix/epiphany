@@ -1,4 +1,4 @@
-%define		basever	3.12
+%define		basever	3.14
 
 Summary:	WebKit-based GNOME web browser
 Name:		epiphany
@@ -7,17 +7,17 @@ Release:	1
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	19f959a7fbd3b38bf6d1726e5624d967
+# Source0-md5:	e7238fd151d83c2dc624d5a1d553782c
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-glib-devel
 BuildRequires:	enchant-devel
-BuildRequires:	gcr-devel >= 3.10.0
-BuildRequires:	gnome-desktop-devel >= 3.12.0
-BuildRequires:	gobject-introspection-devel >= 1.40.0
-BuildRequires:	gsettings-desktop-schemas-devel >= 3.12.0
-BuildRequires:	gtk+3-webkit-devel >= 2.4.0
+BuildRequires:	gcr-devel >= 3.14.0
+BuildRequires:	gnome-desktop-devel >= 3.14.0
+BuildRequires:	gobject-introspection-devel >= 1.42.0
+BuildRequires:	gsettings-desktop-schemas-devel >= 3.14.0
+BuildRequires:	gtk+3-webkit2-devel
 BuildRequires:	intltool
 BuildRequires:	iso-codes
 BuildRequires:	libtool
@@ -28,8 +28,7 @@ Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	glib-gio-gsettings
 Requires:	dbus
 Requires:	gnome-keyring >= 3.12.0
-Requires:	gsettings-desktop-schemas >= 3.12.0
-Requires:	gtk+3-webkit >= 2.4.0
+Requires:	gsettings-desktop-schemas >= 3.14.0
 Requires:	iso-codes
 Requires:	xdg-icon-theme
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
